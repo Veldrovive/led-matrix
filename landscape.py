@@ -14,21 +14,27 @@ class Landscape:
 	def add_sprite(self, sprite):
 		self.sprites.append(sprite)
 
+	def remove_sprite(self, sprite):
+		try:
+			self.sprites.remove(sprite)
+			return True
+		except ValueError:
+			return False
+
 	def update(self):
 		for sprite in self.sprites:
 			sprite.init_update()
 		for x in range(self.width):
+			true_x = self.width-1-x
 			for y in range(self.height):
+				unicorn.set_pixel(true_x, y, *self.background)
 				currZ = None
 				for sprite in self.sprites:
 					if(currZ is None or sprite.z >= currZ):
 						currZ = sprite.z
 						pixel = sprite.get_pixel_val(x, y)
-						true_x = self.width-1-x
 						if(pixel is not None):
 							unicorn.set_pixel(true_x, y, *pixel)
-						else:
-							unicorn.set_pixel(true_x, y, *self.background)
 		unicorn.show()
 
 
