@@ -2,14 +2,17 @@ import numpy as np
 try:
     import unicornhathd as unicorn
     print("unicorn hat hd detected")
+    real_unicorn = True
 except ImportError:
     from unicorn_hat_sim import unicornhathd as unicorn
+    real_unicorn = False
 
 class Landscape:
 	def __init__(self, background=(135, 206, 235)):
 		self.width, self.height = unicorn.get_shape()
 		self.sprites = []
 		self.background = background
+		self.test = not real_unicorn
 
 	def add_sprite(self, sprite):
 		self.sprites.append(sprite)
@@ -31,10 +34,10 @@ class Landscape:
 				currZ = None
 				for sprite in self.sprites:
 					if(currZ is None or sprite.z >= currZ):
-						currZ = sprite.z
 						pixel = sprite.get_pixel_val(x, y)
 						if(pixel is not None):
 							unicorn.set_pixel(true_x, y, *pixel)
+							currZ = sprite.z
 		unicorn.show()
 
 
